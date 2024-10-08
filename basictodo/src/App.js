@@ -35,8 +35,11 @@ function App() {
         {cards.filter(card => card.status === status).map(card => (
           <div key={card.id} className="card">
             {status !== 'todo' && (
-              <button onClick={() => moveCard(card.id, status === 'inProgress' ? 'todo' : 'inProgress')}>
-                ← Move
+              <button 
+                onClick={() => moveCard(card.id, status === 'inProgress' ? 'todo' : 'inProgress')}
+                className="move-back-button"
+              >
+                ← Move Back
               </button>
             )}
             <div className="card-content">
