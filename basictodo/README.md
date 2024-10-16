@@ -1,70 +1,36 @@
-# Getting Started with Create React App
+# Build and Push Docker Image
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Build the Docker Image
 
-## Available Scripts
+1. Navigate to the directory containing the Dockerfile (this one)
+2. Build the Docker image:
+   ```
+   docker build -t basictodo:latest .
+   ```
+   This command builds the image and tags it as `basictodo:latest`.
 
-In the project directory, you can run:
+## Push the Docker Image
 
-### `npm start`
+Before pushing, you need to tag the image with your Docker registry's address. If you're using Docker Hub, it would be your Docker Hub username.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+3. Tag the image (replace `<username>` with your Docker Hub username or your private registry address):
+   ```
+   docker tag basictodo:latest <username>/basictodo:latest
+   ```
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+4. Log in to your Docker registry:
+   ```
+   docker login
+   ```
+   Enter your credentials when prompted.
 
-### `npm test`
+5. Push the image to the registry:
+   ```
+   docker push <username>/basictodo:latest
+   ```
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Additional Notes
 
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+- If you're using a private registry other than Docker Hub, you may need to adjust the login command and include the registry URL in your image tag.
+- You can add a specific version tag instead of or in addition to `latest`, e.g., `basictodo:v1.0.0`.
+- Always ensure you have the necessary permissions to push to the repository you're targeting.
