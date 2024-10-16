@@ -103,3 +103,7 @@ lib-cov
 # Temporary files
 **/tmp/
 **/temp/
+
+**/.terraform/
+**/terraform.tfstate*
+**/.terraform.*

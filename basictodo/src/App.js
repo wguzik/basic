@@ -4,7 +4,7 @@ import './App.css';
 
 function App() {
   const [cards, setCards] = useState([
-    { id: 1, text: 'Task 1', status: 'todo', lastUpdate: new Date() },
+    { id: 1, text: 'Create more tasks', status: 'todo', lastUpdate: new Date() },
   ]);
 
   const [newCardText, setNewCardText] = useState('');
