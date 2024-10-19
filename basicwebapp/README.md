@@ -27,7 +27,7 @@ Czas trwania: 30 minut
   ```bash
   git clone https://github.com/wguzik/basic.git
 
-  cd basicwebapp
+  cd basic/basicwebapp
   ```
 
 > Poniższe kroki realizuje się za pomocą Cloud Shell.
