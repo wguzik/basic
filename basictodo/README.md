@@ -1,30 +1,88 @@
-# Build and Push Docker Image
+# Basic Todo App
 
-## Build the Docker Image
+## Uruchomienie aplikacji lokalnie
 
-1. Navigate to the directory containing the Dockerfile (this one)
-2. Build the Docker image:
+1. Upewnij się, że masz Node.js zainstalowane na swoim systemie (wersja 14.0.0 lub wyższa)
+
+   ```bash
+   node -v
    ```
-   docker build -t basictodo:latest .
+
+> Możesz pobrać Node.js z [oficjalnego repozytorium](https://nodejs.org/en/download/).
+
+2. Otwórz terminal i przejdź do katalogu projektu (ten katalog):
+
+   ```bash
+   cd basictodo
    ```
-   This command builds the image and tags it as `basictodo:latest`.
 
-## Push the Docker Image
+3. Zainstaluj zależności:
+   
+   ```bash
+   npm install
+   ```
 
-Before pushing, you need to tag the image with your Docker registry's address. If you're using Docker Hub, it would be your Docker Hub username.
+4. Uruchom aplikację:
+   
+   ```bash
+   npm start
+   ```
 
-3. Tag the image (replace `<username>` with your Docker Hub username or your private registry address):
+5. Otwórz przeglądarkę internetową i przejdź na:
+
+   ```bash
+   http://localhost:3000
+   ```
+
+## Budowa i uruchomienie kontenera
+
+1. Upewnij się, że masz zainstalowany Docker (lub inny system do budowania obrazów kontenerów):
+
+   ```bash
+   docker --version
+   ```
+
+2. Przejdź do katalogu projektu (ten katalog):
+   
+   ```bash
+   cd basictodo
+   ```
+
+3. Zbuduj obraz za pomocą pliku `Dockerfile.simple`:
+
+   ```bash
+   docker build -t basictodo:latest-simple -f Dockerfile.simple .
+   ```
+
+4. Zbuduj obraz za pomocą pliku `Dockerfile`:
+
+   ```bash
+   docker build -t basictodo:latest -f Dockerfile .
+   ```
+
+5. Porównaj obrazy:
+
+   ```bash
+   docker image ls 
+   ```
+
+## Opublikowanie obrazu
+
+Przed opublikowaniem obrazu, musisz go oznaczyć adresem swojego rejestru. Jeśli używasz Docker Hub, będzie to twoje `Docker Hub username`.
+Jeżeli używasz innego rejestru, będzie to adres tego rejestru, na przykład Azure Container Registry: `myregistry.azurecr.io`.
+
+1. Tag the image (replace `<username>` with your Docker Hub username or your private registry address):
    ```
    docker tag basictodo:latest <username>/basictodo:latest
    ```
 
-4. Log in to your Docker registry:
+2. Log in to your Docker registry:
    ```
    docker login
    ```
    Enter your credentials when prompted.
 
-5. Push the image to the registry:
+3. Push the image to the registry:
    ```
    docker push <username>/basictodo:latest
    ```
