@@ -224,33 +224,19 @@ Odśwież aplikację i zauważ, że tytuł zmienił się na "Basic Todo App From
 
 Tymczasem chwilę wcześniej został zbudowany kontener, który ma stary kod.
 
-8. Zaktualizuj konfigurację nginx, aby upublicznić nową wersję aplikacji pod nowym adresem: `/docker`
+8. Zaktualizuj konfigurację `nginx`, aby zamienić wersję działającą z kodu na tę uruchomioną w kontenerze.
 
 ```bash
 sudo nano /etc/nginx/sites-available/basictodo
 ```
-
-Zamień cały plik na następujący:
-PODMIANKA!
 
 ```nginx
 server {
     listen 80;
     server_name ADRES_IP_SERWERA;  
 
-    # Stary, nadal dziaalajacy adres
     location / {
-        proxy_pass http://localhost:3000;
-        proxy_http_version 1.1;
-        proxy_set_header Upgrade $http_upgrade;
-        proxy_set_header Connection 'upgrade';
-        proxy_set_header Host $host;
-        proxy_cache_bypass $http_upgrade;
-    }
-
-    # Nowy adres
-    location /docker {
-        proxy_pass http://localhost:3001;
+        proxy_pass http://localhost:3001; # zmien tylko port na którym działa kontener
         proxy_http_version 1.1;
         proxy_set_header Upgrade $http_upgrade;
         proxy_set_header Connection 'upgrade';
