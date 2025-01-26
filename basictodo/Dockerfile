@@ -1,5 +1,10 @@
 # Build stage
-FROM node:14-alpine AS build
+FROM node:20-alpine AS build
+
+# Add metadata
+LABEL maintainer="Your Name"
+LABEL version="1.0"
+LABEL description="Basic Todo App"
 
 WORKDIR /app
 
@@ -12,13 +17,23 @@ COPY . .
 RUN npm run build
 
 # Production stage
-FROM node:14-alpine
+FROM node:20-alpine
 
 WORKDIR /app
 
-RUN npm install -g serve
+# Add non-root user
+RUN addgroup -S appgroup && adduser -S appuser -G appgroup && \
+    npm install -g serve && \
+    chown -R appuser:appgroup /app
+
+# Switch to non-root user
+USER appuser
 
 COPY --from=build /app/build ./build
+
+# Add healthcheck
+HEALTHCHECK --interval=30s --timeout=3s \
+  CMD wget --no-verbose --tries=1 --spider http://localhost:3000/ || exit 1
 
 EXPOSE 3000
 

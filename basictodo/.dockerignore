@@ -38,3 +38,7 @@ coverage
 
 # infrastructure
 infra
+
+# README
+README.md
+*.md
