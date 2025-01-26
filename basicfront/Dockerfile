@@ -1,4 +1,4 @@
-FROM node:14-alpine AS builder
+FROM node:20-alpine AS builder
 
 WORKDIR /app
 
@@ -9,7 +9,7 @@ RUN npm install
 # Copy application files
 COPY src ./src
 
-FROM node:14-alpine AS runner
+FROM node:20-alpine AS runner
 
 # Set up working directory
 WORKDIR /app
