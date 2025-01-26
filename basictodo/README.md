@@ -265,25 +265,24 @@ Jeżeli używasz innego rejestru, będzie to adres tego rejestru, na przykład A
 
 1. Otaguj obraz (zamień `<username>` z nazwą swojego registry (lub Docker Hub username)):
 
-   ```bash
-   docker tag basictodo:latest <username>/basictodo:latest
-   ```
+```bash
+docker tag basictodo:latest <username>/basictodo:latest
+```
 
 2. Zaloguj się do swojego registry:
    
-   ```bash
-   az acr login --name <registry-name>
-   ```
+```bash
+az acr login --name <registry-name>
+```
 
 lub 
 
-   ```bash
-   docker login
-   ```
+```bash
+docker login
+```
 
 3. Wyślij obraz do registry:
 
-   ```bash
-   docker push <username>/basictodo:latest
-   ```
-
+```bash
+docker push <username>/basictodo:latest
+```
