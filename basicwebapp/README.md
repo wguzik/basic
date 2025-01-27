@@ -1,4 +1,4 @@
-# Lab - Apka to do
+# Lab - Apka ToDo
 
 ## Wymagania
 
