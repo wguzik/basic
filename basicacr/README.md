@@ -22,6 +22,7 @@ Czas trwania: 30 minut
 
 ```bash
 https://github.com/wguzik/basic.git
+```
 
 ```
 cd basic/basicacr
