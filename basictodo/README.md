@@ -260,22 +260,23 @@ sudo systemctl restart nginx
 
 ## Opublikowanie obrazu
 
-Przed opublikowaniem obrazu, musisz go oznaczyć adresem swojego rejestru. Jeśli używasz Docker Hub, będzie to twoje `Docker Hub username`.
-Jeżeli używasz innego rejestru, będzie to adres tego rejestru, na przykład Azure Container Registry: `myregistry.azurecr.io`.
+0. Stwórz repozytorium w Azure Container Registry
 
-1. Otaguj obraz (zamień `<username>` z nazwą swojego registry (lub Docker Hub username)):
+Wykonaj ćwiczenie z katalogu `basicacr` za pomocą Cloud Shell lub na swoim komputerze. Nie na maszynie wirtualnej!
+
+1. Otaguj obraz (zamień `<acrName>` z nazwą swojego registry (lub Docker Hub username)):
 
 ```bash
-docker tag basictodo:latest <username>/basictodo:latest
+docker tag basictodo:latest <acrName>/basictodo:latest
 ```
 
 2. Zaloguj się do swojego registry:
    
 ```bash
-az acr login --name <registry-name>
+az acr login --name <acrName>
 ```
 
-lub 
+lub gdy używasz Docker Hub:
 
 ```bash
 docker login
@@ -284,5 +285,5 @@ docker login
 3. Wyślij obraz do registry:
 
 ```bash
-docker push <username>/basictodo:latest
+docker push <acrName>/basictodo:latest
 ```
