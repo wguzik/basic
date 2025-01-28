@@ -107,3 +107,5 @@ lib-cov
 **/.terraform/
 **/terraform.tfstate*
 **/.terraform.*
+**/terraform.tfvars
+!**/terraform.tfvars.example
