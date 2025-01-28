@@ -41,6 +41,12 @@ Czas trwania: 30 minut
 
 ### Krok 3 - Edytuj zmienne
 
+  - wykonaj kopię pliku terraform.tfvars.example
+
+  ```bash
+  cp terraform.tfvars.example terraform.tfvars
+  ```
+
   - uruchom edytor
 
   ```bash
@@ -50,7 +56,7 @@ Czas trwania: 30 minut
   - zmień wartość zmiennej `custom_name` na `<inicjały>`
   - zapisz i wyjdź z edytora
 
-### Krok 4 - Wdróż aplikację i odwiedź ją
+### Krok 4 - Wdróż aplikację i odwiedź stronę
 
   ```bash
   terraform apply
