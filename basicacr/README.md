@@ -79,8 +79,8 @@ az acr credential show --name <nazwa-acr>
 ```
 
 ```bash
-az keyvault secret show --vault-name $(terraform output key_vault_name) --name $(terraform output acr_password) --query value -o tsv
-az keyvault secret show --vault-name $(terraform output key_vault_name) --name $(terraform output acr_username) --query value -o tsv
+az keyvault secret show --vault-name $(terraform output kv_name) --name $(terraform output acr_password) --query value -o tsv
+az keyvault secret show --vault-name $(terraform output kv_name) --name $(terraform output acr_username) --query value -o tsv
 ```
 
 7. Po zakończeniu pracy możesz usunąć zasoby:
