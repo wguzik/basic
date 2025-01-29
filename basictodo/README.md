@@ -266,17 +266,44 @@ W tym momencie Aplikacja dla użytkownika jest udostępniana jako działający k
 
 ## Opublikowanie obrazu
 
-0. Stwórz repozytorium w [Azure Container Registry](./basicacr)
+0. Zainstaluj oprogramowanie i zaloguj się do Azure:
+
+```bash
+curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
+```
+
+```bash
+az login --device-login
+```
+Otwórz link, skopiuj kod i potwierdź logowanie.
+
+```bash
+sudo apt-get update && sudo apt-get install -y gnupg software-properties-common
+wget -O- https://apt.releases.hashicorp.com/gpg | \
+gpg --dearmor | \
+sudo tee /usr/share/keyrings/hashicorp-archive-keyring.gpg > /dev/null
+
+echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] \
+https://apt.releases.hashicorp.com $(lsb_release -cs) main" | \
+sudo tee /etc/apt/sources.list.d/hashicorp.list
+
+sudo apt update
+sudo apt-get install terraform
+```
+
+
+
+2. Stwórz repozytorium w [Azure Container Registry](./basicacr)
 
 > Wykonaj ćwiczenie z katalogu `basicacr` za pomocą Cloud Shell lub na swoim komputerze. Możesz na maszynie wirtualnej, aczkolwiek musisz doinstalować Terraform i Azure CLI.
 
-1. Otaguj obraz (zamień `<acrName>` z nazwą swojego registry (lub Docker Hub username)):
+2. Otaguj obraz (zamień `<acrName>` z nazwą swojego registry (lub Docker Hub username)):
 
 ```bash
 docker tag basictodo:latest <acrName>/basictodo:latest
 ```
 
-2. Zaloguj się do swojego registry:
+3. Zaloguj się do swojego registry:
    
 ```bash
 az acr login --name <acrName>
@@ -288,13 +315,13 @@ lub gdy używasz Docker Hub:
 docker login
 ```
 
-3. Wyślij obraz do registry:
+4. Wyślij obraz do registry:
 
 ```bash
 docker push <acrName>/basictodo:latest
 ```
 
-4. Sprawdź, czy obraz jest dostępny w registry:
+5. Sprawdź, czy obraz jest dostępny w registry:
 
 ```bash
 az acr repository list -n <acrName>
