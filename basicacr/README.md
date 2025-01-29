@@ -75,12 +75,12 @@ az acr login --name <nazwa-acr>
 6. Pobierz poświadczenia do ACR:
 
 ```bash
-az acr credential show --name <nazwa-acr>
+az acr credential show --name <acr_name>
 ```
 
 ```bash
-az keyvault secret show --vault-name $(terraform output kv_name) --name $(terraform output acr_password) --query value -o tsv
-az keyvault secret show --vault-name $(terraform output kv_name) --name $(terraform output acr_username) --query value -o tsv
+az keyvault secret show --vault-name <kv_name> --name <acr_password> --query value -o tsv
+az keyvault secret show --vault-name $(terraform output kv_name) --name <acr_username> --query value -o tsv
 ```
 
 7. Po zakończeniu pracy możesz usunąć zasoby:
