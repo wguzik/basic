@@ -291,8 +291,6 @@ sudo apt update
 sudo apt-get install terraform
 ```
 
-
-
 2. Stwórz repozytorium w [Azure Container Registry](./basicacr)
 
 > Wykonaj ćwiczenie z katalogu `basicacr` za pomocą Cloud Shell lub na swoim komputerze. Możesz na maszynie wirtualnej, aczkolwiek musisz doinstalować Terraform i Azure CLI.
@@ -435,3 +433,7 @@ az webapp log tail --name $WEBAPP_NAME --resource-group $RESOURCE_GROUP
 ```
 
 Po poprawnej konfiguracji, Web App powinna automatycznie pobrać i uruchomić obraz z ACR.
+
+## Usuń zasoby
+
+Usuń zasoby, szczególnie Web App i Maszynę wirtualną.
