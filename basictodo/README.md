@@ -1,5 +1,17 @@
 # Basic Todo App
 
+## Cel
+
+Prześledź scieżkę od wdrożenia aplikacji w formie kopiowania plików do wdrożenia z wykorzystaniem kontenera.
+
+Czas: 3h
+
+## Wymagania
+
+Aktywna subskrypcja w Azure.
+
+Agent SSH.
+
 ## Uruchomienie aplikacji lokalnie
 
 1. Upewnij się, że masz Node.js zainstalowane na swoim systemie (wersja 14.0.0 lub wyższa)
@@ -46,14 +58,17 @@ http://localhost:3000
 
 [Create a Linux virtual machine in the Azure portal](https://learn.microsoft.com/en-us/azure/virtual-machines/linux/quick-create-portal?tabs=ubuntu)
 
-Wybierz Ubuntu 20.04 LTS.
+Wybierz Ubuntu 22.04 LTS. Maszyna D2S_v3.
 Pobierz plik `.pem` z kluczem i otwórz zasób.
 
-Postępuj zgodnie z instrukcją i zaloguj się przez ssh do maszyny wirtualnej.
+Postępuj zgodnie z instrukcją, pobierz klucz i zaloguj się przez ssh do maszyny wirtualnej.
 
-Masz kłopot z połączeniem się przez ssh?
-Wybierz opcję "Connect", a następnie "SSH using Azure CLI" i wybierz "Configure".
+```bash
+ssh -i ~/Downloads/<nazwa klucza>.pem azureuser@<publiczny adres maszyny>
+```
 
+> Masz kłopot z połączeniem się przez ssh?
+> Wybierz opcję "Connect", a następnie "SSH using Azure CLI" i wybierz "Configure".
 
 1. Zainstaluj wymagane pakiety:
 
@@ -66,13 +81,6 @@ sudo apt install -y nodejs npm nginx
 
 ```bash
 node -v
-```
-
-   Jeśli wersja jest niższa niż 14.0.0, zaktualizuj Node.js:
-   
-```bash
-curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
-sudo apt install -y nodejs
 ```
 
 3. Sklonuj repozytorium i zainstaluj zależności:
@@ -98,10 +106,6 @@ sudo npm install -g pm2
 ```
 
 ```bash
-cd ~/basic/basictodo
-```
-
-```bash
 pm2 start npm --name "todo" -- start
 ```
 
@@ -118,7 +122,7 @@ pm2 save
 sudo nano /etc/nginx/sites-available/basictodo
 ```
 
-Wklej następujący kod:
+Wklej następujący kod, zamień `ADRES_IP_SERWERA` na faktyczny publiczny adres swojego serwera:
 
 ```nginx
 server {
@@ -135,6 +139,7 @@ server {
     }
 }
 ```
+> Ctrl + X, Y, [Enter]
 
 2. Włącz konfigurację i uruchom Nginx:
 
@@ -158,9 +163,11 @@ sudo ufw enable
 
 4.  Otwórz przeglądarkę i wpisz adres IP serwera.
 
+> Strona używa niezabezpieczonego protokołu, możesz dostać ostrzeżenie od przeglądarki.
+
 ## Budowa i uruchomienie kontenera
 
-Wykonaj ćwiczenie na tej samej maszynie wirtualnej!
+> Wykonaj ćwiczenie na tej samej maszynie wirtualnej!
 
 1. Zainstaluj i skonfiguruj Docker:
 
@@ -181,7 +188,7 @@ docker run hello-world
 2. Przejdź do katalogu projektu (ten katalog):
    
 ```bash
-cd basictodo
+cd ~/basic/basictodo
 ```
 
 3. Zbuduj obraz za pomocą pliku `Dockerfile.simple`:
@@ -222,7 +229,7 @@ sed -i 's/Basic Todo App/Basic Todo App From Code/g' src/App.js
 
 Odśwież aplikację i zauważ, że tytuł zmienił się na "Basic Todo App From Code".
 
-Tymczasem chwilę wcześniej został zbudowany kontener, który ma stary kod.
+Tymczasem chwilę wcześniej został zbudowany kontener, który ma stary kod z nagłówkiem "Basic Todo App".
 
 8. Zaktualizuj konfigurację `nginx`, aby zamienić wersję działającą z kodu na tę uruchomioną w kontenerze.
 
@@ -237,10 +244,7 @@ server {
 
     location / {
         proxy_pass http://localhost:3001; # zmien tylko port na którym działa kontener
-        proxy_http_version 1.1;
-        proxy_set_header Upgrade $http_upgrade;
-        proxy_set_header Connection 'upgrade';
-        proxy_set_header Host $host;
+         ///
         proxy_cache_bypass $http_upgrade;
         
         rewrite ^/docker/(.*) /$1 break;
@@ -258,19 +262,46 @@ Jeżeli się nie udał, zweryfikuj konfigurację, a po udanym teście zrestartuj
 sudo systemctl restart nginx
 ```
 
+W tym momencie Aplikacja dla użytkownika jest udostępniana jako działający kontener.
+
 ## Opublikowanie obrazu
 
-0. Stwórz repozytorium w [Azure Container Registry](./basicacr)
+0. Zainstaluj oprogramowanie i zaloguj się do Azure:
+
+```bash
+curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
+```
+
+```bash
+az login --device-login
+```
+Otwórz link, skopiuj kod i potwierdź logowanie.
+
+```bash
+sudo apt-get update && sudo apt-get install -y gnupg software-properties-common
+wget -O- https://apt.releases.hashicorp.com/gpg | \
+gpg --dearmor | \
+sudo tee /usr/share/keyrings/hashicorp-archive-keyring.gpg > /dev/null
+
+echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] \
+https://apt.releases.hashicorp.com $(lsb_release -cs) main" | \
+sudo tee /etc/apt/sources.list.d/hashicorp.list
+
+sudo apt update
+sudo apt-get install terraform
+```
+
+2. Stwórz repozytorium w [Azure Container Registry](./basicacr)
 
 > Wykonaj ćwiczenie z katalogu `basicacr` za pomocą Cloud Shell lub na swoim komputerze. Możesz na maszynie wirtualnej, aczkolwiek musisz doinstalować Terraform i Azure CLI.
 
-1. Otaguj obraz (zamień `<acrName>` z nazwą swojego registry (lub Docker Hub username)):
+2. Otaguj obraz (zamień `<acrName>` z nazwą swojego registry (lub Docker Hub username)):
 
 ```bash
-docker tag basictodo:latest <acrName>/basictodo:latest
+docker tag basictodo:latest <acrName>.azurecr.io/basictodo:latest
 ```
 
-2. Zaloguj się do swojego registry:
+3. Zaloguj się do swojego registry:
    
 ```bash
 az acr login --name <acrName>
@@ -282,13 +313,13 @@ lub gdy używasz Docker Hub:
 docker login
 ```
 
-3. Wyślij obraz do registry:
+4. Wyślij obraz do registry:
 
 ```bash
-docker push <acrName>/basictodo:latest
+docker push <acrName>.azurecr.io/basictodo:latest
 ```
 
-4. Sprawdź, czy obraz jest dostępny w registry:
+5. Sprawdź, czy obraz jest dostępny w registry:
 
 ```bash
 az acr repository list -n <acrName>
@@ -300,7 +331,6 @@ Otwórz przeglądarkę, znajdź Registry w Azure Portal i sprawdź, czy obraz je
 
 1. Wdróż aplikację z katalogu [basicwebapp](./basicwebapp)
 
-> Wykonaj ćwiczenie z katalogu `basicwebapp` za pomocą Cloud Shell lub na swoim komputerze. Możesz na maszynie wirtualnej, aczkolwiek musisz doinstalować Terraform i Azure CLI.
 > Repozytorium masz już sklonowane, zmień katalog na `basicwebapp` i wykonaj kroki opisane w README.md.
 
 2. Skonfiguruj Web App, aby miała dostęp do Container Registry
@@ -338,6 +368,10 @@ az webapp config container set \
 
 ```bash
 # Włącz tożsamość zarządzaną
+
+WEBAPP_NAME="<nazwa-webapp>"
+RESOURCE_GROUP="<nazwa-resource-group>"
+
 az webapp identity assign \
     --name $WEBAPP_NAME \
     --resource-group $RESOURCE_GROUP
@@ -354,9 +388,11 @@ IDENTITY_ID=$(az webapp identity show \
 
 ```bash
 # Pobierz ID ACR
+RESOURCE_GROUP_ACR="<nazwa-resource-group-acr>"
+
 ACR_ID=$(az acr show \
     --name $ACR_NAME \
-    --resource-group $RESOURCE_GROUP \
+    --resource-group $RESOURCE_GROUP_ACR \
     --query id \
     --output tsv)
 
@@ -372,6 +408,7 @@ az role assignment create \
 ```bash
 $ACR_NAME="<nazwa-acr>"
 $IMAGE_NAME="basictodo:latest"
+
 az webapp config container set \
     --name $WEBAPP_NAME \
     --resource-group $RESOURCE_GROUP \
@@ -385,6 +422,8 @@ az webapp config container set \
 az webapp restart --name $WEBAPP_NAME --resource-group $RESOURCE_GROUP
 ```
 
+Upewnij się, że w "Deployment > Deployment Center" w sekcji "Authenticatin" jest wybrane "Managed Identity".
+
 > **Uwaga**: Opcja 2 (tożsamość zarządzana) jest bardziej bezpieczna, ponieważ nie wymaga przechowywania poświadczeń w konfiguracji aplikacji.
 
 5. Sprawdź logi aplikacji w przypadku problemów:
@@ -394,3 +433,7 @@ az webapp log tail --name $WEBAPP_NAME --resource-group $RESOURCE_GROUP
 ```
 
 Po poprawnej konfiguracji, Web App powinna automatycznie pobrać i uruchomić obraz z ACR.
+
+## Usuń zasoby
+
+Usuń zasoby, szczególnie Web App i Maszynę wirtualną.
