@@ -1,5 +1,17 @@
 # Basic Todo App
 
+## Cel
+
+Prześledź scieżkę od wdrożenia aplikacji w formie kopiowania plików do wdrożenia z wykorzystaniem kontenera.
+
+Czas: 3h
+
+## Wymagania
+
+Aktywna subskrypcja w Azure.
+
+Agent SSH.
+
 ## Uruchomienie aplikacji lokalnie
 
 1. Upewnij się, że masz Node.js zainstalowane na swoim systemie (wersja 14.0.0 lub wyższa)
@@ -46,14 +58,17 @@ http://localhost:3000
 
 [Create a Linux virtual machine in the Azure portal](https://learn.microsoft.com/en-us/azure/virtual-machines/linux/quick-create-portal?tabs=ubuntu)
 
-Wybierz Ubuntu 20.04 LTS.
+Wybierz Ubuntu 22.04 LTS. Maszyna D2S_v3.
 Pobierz plik `.pem` z kluczem i otwórz zasób.
 
-Postępuj zgodnie z instrukcją i zaloguj się przez ssh do maszyny wirtualnej.
+Postępuj zgodnie z instrukcją, pobierz klucz i zaloguj się przez ssh do maszyny wirtualnej.
 
-Masz kłopot z połączeniem się przez ssh?
-Wybierz opcję "Connect", a następnie "SSH using Azure CLI" i wybierz "Configure".
+```bash
+ssh -i ~/Downloads/<nazwa klucza>.pem azureuser@<publiczny adres maszyny>
+```
 
+> Masz kłopot z połączeniem się przez ssh?
+> Wybierz opcję "Connect", a następnie "SSH using Azure CLI" i wybierz "Configure".
 
 1. Zainstaluj wymagane pakiety:
 
@@ -66,13 +81,6 @@ sudo apt install -y nodejs npm nginx
 
 ```bash
 node -v
-```
-
-   Jeśli wersja jest niższa niż 14.0.0, zaktualizuj Node.js:
-   
-```bash
-curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
-sudo apt install -y nodejs
 ```
 
 3. Sklonuj repozytorium i zainstaluj zależności:
@@ -98,10 +106,6 @@ sudo npm install -g pm2
 ```
 
 ```bash
-cd ~/basic/basictodo
-```
-
-```bash
 pm2 start npm --name "todo" -- start
 ```
 
@@ -118,7 +122,7 @@ pm2 save
 sudo nano /etc/nginx/sites-available/basictodo
 ```
 
-Wklej następujący kod:
+Wklej następujący kod, zamień `ADRES_IP_SERWERA` na faktyczny publiczny adres swojego serwera:
 
 ```nginx
 server {
@@ -135,6 +139,7 @@ server {
     }
 }
 ```
+> Ctrl + X, Y, [Enter]
 
 2. Włącz konfigurację i uruchom Nginx:
 
@@ -158,9 +163,11 @@ sudo ufw enable
 
 4.  Otwórz przeglądarkę i wpisz adres IP serwera.
 
+> Strona używa niezabezpieczonego protokołu, możesz dostać ostrzeżenie od przeglądarki.
+
 ## Budowa i uruchomienie kontenera
 
-Wykonaj ćwiczenie na tej samej maszynie wirtualnej!
+> Wykonaj ćwiczenie na tej samej maszynie wirtualnej!
 
 1. Zainstaluj i skonfiguruj Docker:
 
@@ -181,7 +188,7 @@ docker run hello-world
 2. Przejdź do katalogu projektu (ten katalog):
    
 ```bash
-cd basictodo
+cd ~/basic/basictodo
 ```
 
 3. Zbuduj obraz za pomocą pliku `Dockerfile.simple`:
@@ -222,7 +229,7 @@ sed -i 's/Basic Todo App/Basic Todo App From Code/g' src/App.js
 
 Odśwież aplikację i zauważ, że tytuł zmienił się na "Basic Todo App From Code".
 
-Tymczasem chwilę wcześniej został zbudowany kontener, który ma stary kod.
+Tymczasem chwilę wcześniej został zbudowany kontener, który ma stary kod z nagłówkiem "Basic Todo App".
 
 8. Zaktualizuj konfigurację `nginx`, aby zamienić wersję działającą z kodu na tę uruchomioną w kontenerze.
 
@@ -237,10 +244,7 @@ server {
 
     location / {
         proxy_pass http://localhost:3001; # zmien tylko port na którym działa kontener
-        proxy_http_version 1.1;
-        proxy_set_header Upgrade $http_upgrade;
-        proxy_set_header Connection 'upgrade';
-        proxy_set_header Host $host;
+         ///
         proxy_cache_bypass $http_upgrade;
         
         rewrite ^/docker/(.*) /$1 break;
@@ -257,6 +261,8 @@ Jeżeli się nie udał, zweryfikuj konfigurację, a po udanym teście zrestartuj
 ```bash
 sudo systemctl restart nginx
 ```
+
+W tym momencie Aplikacja dla użytkownika jest udostępniana jako działający kontener.
 
 ## Opublikowanie obrazu
 
