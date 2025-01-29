@@ -1,5 +1,5 @@
 custom_name  = "mywebapp" #inicjały
 region       = "northeurope"
-sku_size     = "Basic"
+sku_size     = "B1"
 docker_image = "nginx:latest" #"vhron/basictodo:0.2.0"
 
