@@ -300,7 +300,7 @@ sudo apt-get install terraform
 2. Otaguj obraz (zamień `<acrName>` z nazwą swojego registry (lub Docker Hub username)):
 
 ```bash
-docker tag basictodo:latest <acrName>/basictodo:latest
+docker tag basictodo:latest <acrName>.azurecr.io/basictodo:latest
 ```
 
 3. Zaloguj się do swojego registry:
@@ -318,7 +318,7 @@ docker login
 4. Wyślij obraz do registry:
 
 ```bash
-docker push <acrName>/basictodo:latest
+docker push <acrName>.azurecr.io/basictodo:latest
 ```
 
 5. Sprawdź, czy obraz jest dostępny w registry:
@@ -333,7 +333,6 @@ Otwórz przeglądarkę, znajdź Registry w Azure Portal i sprawdź, czy obraz je
 
 1. Wdróż aplikację z katalogu [basicwebapp](./basicwebapp)
 
-> Wykonaj ćwiczenie z katalogu `basicwebapp` za pomocą Cloud Shell lub na swoim komputerze. Możesz na maszynie wirtualnej, aczkolwiek musisz doinstalować Terraform i Azure CLI.
 > Repozytorium masz już sklonowane, zmień katalog na `basicwebapp` i wykonaj kroki opisane w README.md.
 
 2. Skonfiguruj Web App, aby miała dostęp do Container Registry
@@ -371,6 +370,10 @@ az webapp config container set \
 
 ```bash
 # Włącz tożsamość zarządzaną
+
+WEBAPP_NAME="<nazwa-webapp>"
+RESOURCE_GROUP="<nazwa-resource-group>"
+
 az webapp identity assign \
     --name $WEBAPP_NAME \
     --resource-group $RESOURCE_GROUP
@@ -387,9 +390,11 @@ IDENTITY_ID=$(az webapp identity show \
 
 ```bash
 # Pobierz ID ACR
+RESOURCE_GROUP_ACR="<nazwa-resource-group-acr>"
+
 ACR_ID=$(az acr show \
     --name $ACR_NAME \
-    --resource-group $RESOURCE_GROUP \
+    --resource-group $RESOURCE_GROUP_ACR \
     --query id \
     --output tsv)
 
@@ -405,6 +410,7 @@ az role assignment create \
 ```bash
 $ACR_NAME="<nazwa-acr>"
 $IMAGE_NAME="basictodo:latest"
+
 az webapp config container set \
     --name $WEBAPP_NAME \
     --resource-group $RESOURCE_GROUP \
@@ -417,6 +423,8 @@ az webapp config container set \
 ```bash
 az webapp restart --name $WEBAPP_NAME --resource-group $RESOURCE_GROUP
 ```
+
+Upewnij się, że w "Deployment > Deployment Center" w sekcji "Authenticatin" jest wybrane "Managed Identity".
 
 > **Uwaga**: Opcja 2 (tożsamość zarządzana) jest bardziej bezpieczna, ponieważ nie wymaga przechowywania poświadczeń w konfiguracji aplikacji.
 
