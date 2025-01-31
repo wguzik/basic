@@ -76,6 +76,8 @@ ssh -i ~/Downloads/<nazwa klucza>.pem azureuser@<publiczny adres maszyny>
 > Masz kłopot z połączeniem się przez ssh?
 > Wybierz opcję "Connect", a następnie "SSH using Azure CLI" i wybierz "Configure".
 
+> Shift+insert pozwala wkleić kod do terminala.
+
 1. Zainstaluj wymagane pakiety:
 
 ```bash
