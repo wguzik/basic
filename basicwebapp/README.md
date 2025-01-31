@@ -74,6 +74,9 @@ Czas trwania: 30 minut
   terraform apply
   ```
 
+Aplikacja nie załadowała się?
+Odwiedź "Deployment Center" na poziomie Web App w Portalu Azure i zweryfikuj jak się nazywa obraz. Czy format jest właściwy?
+
 ### Krok -1 - Usuń zasoby
 
   ```bash
