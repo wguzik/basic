@@ -47,14 +47,12 @@ Czas trwania: 30 minut
   cp terraform.tfvars.example terraform.tfvars
   ```
 
-  - uruchom edytor
+  - zmień custom_name
 
   ```bash
-  code terraform.tfvars
+   sed -i 's/mywebapp/<twojeinicjaly>/' terraform.tfvars
+   # sed -i 's/mywebapp/wg/' terraform.tfvars
   ```
-
-  - zmień wartość zmiennej `custom_name` na `<inicjały>`
-  - zapisz i wyjdź z edytora
 
 ### Krok 4 - Wdróż aplikację i odwiedź stronę
 
@@ -66,12 +64,9 @@ Czas trwania: 30 minut
 
 ### Krok 5 - zmodifykuj obraz
 
-  - uruchom edytor
   ```
-    code terraform.tfvars
+  sed -i 's/nginx:latest/vhron\/basictodo:0.2.0/' terraform.tfvars
   ```
-  - zmień wartość zmiennej `docker_image` na `vhron/basictodo:0.2.0`
-  - zapisz i wyjdź z edytora
 
 ### Krok 4 - Wdróż zmiany
 
