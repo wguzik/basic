@@ -348,7 +348,7 @@ Otwórz przeglądarkę, znajdź Registry w Azure Portal i sprawdź, czy obraz je
 
 ## Wdrożenie w Azure App Service
 
-1. Wdróż aplikację z katalogu [basicwebapp](./basicwebapp)
+1. Wdróż aplikację z katalogu [basicwebapp](../basicwebapp)
 
 > Repozytorium masz już sklonowane, zmień katalog na `basicwebapp` i wykonaj kroki opisane w README.md.
 
