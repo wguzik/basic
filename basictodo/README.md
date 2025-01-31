@@ -290,8 +290,9 @@ curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
 ```
 
 ```bash
-az login --device-login
+az login
 ```
+
 Otwórz link, skopiuj kod i potwierdź logowanie.
 
 ```bash
