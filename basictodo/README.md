@@ -313,13 +313,13 @@ sudo apt-get install terraform
 
 > Wykonaj ćwiczenie z katalogu `basicacr` za pomocą Cloud Shell lub na swoim komputerze. Możesz na maszynie wirtualnej, aczkolwiek musisz doinstalować Terraform i Azure CLI.
 
-2. Otaguj obraz (zamień `<acrName>` z nazwą swojego registry (lub Docker Hub username)):
+3. Otaguj obraz (zamień `<acrName>` z nazwą swojego registry (lub Docker Hub username)):
 
 ```bash
 docker tag basictodo:latest <acrName>.azurecr.io/basictodo:latest
 ```
 
-3. Zaloguj się do swojego registry:
+4. Zaloguj się do swojego registry:
    
 ```bash
 az acr login --name <acrName>
@@ -331,13 +331,13 @@ lub gdy używasz Docker Hub:
 docker login
 ```
 
-4. Wyślij obraz do registry:
+5. Wyślij obraz do registry:
 
 ```bash
 docker push <acrName>.azurecr.io/basictodo:latest
 ```
 
-5. Sprawdź, czy obraz jest dostępny w registry:
+6. Sprawdź, czy obraz jest dostępny w registry:
 
 ```bash
 az acr repository list -n <acrName>
