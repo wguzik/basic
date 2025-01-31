@@ -281,6 +281,11 @@ W tym momencie Aplikacja dla użytkownika jest udostępniana jako działający k
 0. Zainstaluj oprogramowanie i zaloguj się do Azure:
 
 ```bash
+# przejdź do katalogu domowego
+cd ~
+```
+
+```bash
 curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
 ```
 
