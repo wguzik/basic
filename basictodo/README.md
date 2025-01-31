@@ -59,9 +59,15 @@ http://localhost:3000
 [Create a Linux virtual machine in the Azure portal](https://learn.microsoft.com/en-us/azure/virtual-machines/linux/quick-create-portal?tabs=ubuntu)
 
 Wybierz Ubuntu 22.04 LTS. Maszyna D2S_v3.
+W "Select inbound ports" upewnij się, że masz zaznaczone `HTTP (80)` oraz `SSH (22)`.
+
+Wybierz "Review + Create" i potwierdź "Create".
+
 Pobierz plik `.pem` z kluczem i otwórz zasób.
 
-Postępuj zgodnie z instrukcją, pobierz klucz i zaloguj się przez ssh do maszyny wirtualnej.
+Pobierz klucz i zaloguj się przez ssh do maszyny wirtualnej. Poczekaj kilka minut, aż maszyna się uruchomi.
+
+Uruchom konsolę (PowerShell jeżeli to Windows):
 
 ```bash
 ssh -i ~/Downloads/<nazwa klucza>.pem azureuser@<publiczny adres maszyny>
