@@ -316,13 +316,14 @@ sudo apt-get install terraform
 3. Otaguj obraz (zamień `<acrName>` z nazwą swojego registry (lub Docker Hub username)):
 
 ```bash
-docker tag basictodo:latest <acrName>.azurecr.io/basictodo:latest
+ACR_NAME="<acrName>" # sprawdź output z terraforma, weź tę częśc BEZ azurecr.io
+docker tag basictodo:latest $ACR_NAME.azurecr.io/basictodo:latest
 ```
 
 4. Zaloguj się do swojego registry:
    
 ```bash
-az acr login --name <acrName>
+az acr login --name $ACR_NAME
 ```
 
 lub gdy używasz Docker Hub:
@@ -334,13 +335,13 @@ docker login
 5. Wyślij obraz do registry:
 
 ```bash
-docker push <acrName>.azurecr.io/basictodo:latest
+docker push $ACR_NAME.azurecr.io/basictodo:latest
 ```
 
 6. Sprawdź, czy obraz jest dostępny w registry:
 
 ```bash
-az acr repository list -n <acrName>
+az acr repository list -n $ACR_NAME
 ```
 
 Otwórz przeglądarkę, znajdź Registry w Azure Portal i sprawdź, czy obraz jest dostępny.
