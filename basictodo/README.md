@@ -425,7 +425,6 @@ az role assignment create \
 3. Skonfiguruj Web App do użycia obrazu z ACR:
 
 ```bash
-$ACR_NAME="<nazwa-acr>"
 $IMAGE_NAME="basictodo:latest"
 
 az webapp config container set \
