@@ -358,7 +358,7 @@ Masz dwie opcje:
 
 > Obydwa ustawienia można wdrożyć za pomocą Terraform, natomiast w celach demonstracyjnych wykonaj je wedle sposobu poniżej.
 
-### Opcja 1: Użycie poświadczeń administracyjnych ACR
+### Opcja 1: Użycie poświadczeń administracyjnych ACR (gdy używasz Docker Hub albo innego repozytorium)
 
 ```bash
 # Pobierz dane uwierzytelniające z ACR
