@@ -311,7 +311,7 @@ sudo apt-get install terraform
 
 2. Stwórz repozytorium w [Azure Container Registry](../basicacr)
 
-> Wykonaj ćwiczenie z katalogu `basicacr` za pomocą Cloud Shell lub na swoim komputerze. Możesz na maszynie wirtualnej, aczkolwiek musisz doinstalować Terraform i Azure CLI.
+> Masz już to repozytorium, nie musisz go ponownie klonować!
 
 3. Otaguj obraz (zamień `<acrName>` z nazwą swojego registry (lub Docker Hub username)):
 
