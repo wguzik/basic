@@ -303,7 +303,7 @@ sudo apt update
 sudo apt-get install terraform
 ```
 
-2. Stwórz repozytorium w [Azure Container Registry](./basicacr)
+2. Stwórz repozytorium w [Azure Container Registry](../basicacr)
 
 > Wykonaj ćwiczenie z katalogu `basicacr` za pomocą Cloud Shell lub na swoim komputerze. Możesz na maszynie wirtualnej, aczkolwiek musisz doinstalować Terraform i Azure CLI.
 
