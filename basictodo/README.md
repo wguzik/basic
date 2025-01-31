@@ -59,9 +59,15 @@ http://localhost:3000
 [Create a Linux virtual machine in the Azure portal](https://learn.microsoft.com/en-us/azure/virtual-machines/linux/quick-create-portal?tabs=ubuntu)
 
 Wybierz Ubuntu 22.04 LTS. Maszyna D2S_v3.
+W "Select inbound ports" upewnij się, że masz zaznaczone `HTTP (80)` oraz `SSH (22)`.
+
+Wybierz "Review + Create" i potwierdź "Create".
+
 Pobierz plik `.pem` z kluczem i otwórz zasób.
 
-Postępuj zgodnie z instrukcją, pobierz klucz i zaloguj się przez ssh do maszyny wirtualnej.
+Pobierz klucz i zaloguj się przez ssh do maszyny wirtualnej. Poczekaj kilka minut, aż maszyna się uruchomi.
+
+Uruchom konsolę (PowerShell jeżeli to Windows):
 
 ```bash
 ssh -i ~/Downloads/<nazwa klucza>.pem azureuser@<publiczny adres maszyny>
@@ -69,6 +75,8 @@ ssh -i ~/Downloads/<nazwa klucza>.pem azureuser@<publiczny adres maszyny>
 
 > Masz kłopot z połączeniem się przez ssh?
 > Wybierz opcję "Connect", a następnie "SSH using Azure CLI" i wybierz "Configure".
+
+> Shift+insert pozwala wkleić kod do terminala.
 
 1. Zainstaluj wymagane pakiety:
 
@@ -115,6 +123,10 @@ Upewnij się, że PM2 zostanie uruchomione przy starcie systemu (dzięki czemu a
 pm2 startup
 pm2 save
 ```
+
+> Możesz w tym miejscu edytować Network Security Group i otwórzyć ruch na port 3000. Jeżeli aplikacja się uruchomiła, to powinna być dostępna.
+> Aplikacje webowe zazwyczaj działają na portach 80 i 443, wobec czego chcemy tutaj zrobić przekierowanie.
+> Dlaczego nie uruchomić aplikacji od razu na porcie 80? Ponieważ wtedy utrudnilibyśmy uruchamianie innych aplikacji, a na dodatek nasza aplikacja byłaby "goła" wystawiona na świat. Dzięki takim rozwiązaniom jak nginx można łatwiej wdrożyć reverse proxy oraz load balancing.
 
 1. Skonfiguruj Nginx:
 
@@ -269,12 +281,18 @@ W tym momencie Aplikacja dla użytkownika jest udostępniana jako działający k
 0. Zainstaluj oprogramowanie i zaloguj się do Azure:
 
 ```bash
+# przejdź do katalogu domowego
+cd ~
+```
+
+```bash
 curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
 ```
 
 ```bash
-az login --device-login
+az login
 ```
+
 Otwórz link, skopiuj kod i potwierdź logowanie.
 
 ```bash
@@ -291,20 +309,21 @@ sudo apt update
 sudo apt-get install terraform
 ```
 
-2. Stwórz repozytorium w [Azure Container Registry](./basicacr)
+2. Stwórz repozytorium w [Azure Container Registry](../basicacr)
 
-> Wykonaj ćwiczenie z katalogu `basicacr` za pomocą Cloud Shell lub na swoim komputerze. Możesz na maszynie wirtualnej, aczkolwiek musisz doinstalować Terraform i Azure CLI.
+> Masz już to repozytorium, nie musisz go ponownie klonować!
 
-2. Otaguj obraz (zamień `<acrName>` z nazwą swojego registry (lub Docker Hub username)):
+3. Otaguj obraz (zamień `<acrName>` z nazwą swojego registry (lub Docker Hub username)):
 
 ```bash
-docker tag basictodo:latest <acrName>.azurecr.io/basictodo:latest
+ACR_NAME="<acrName>" # sprawdź output z terraforma, weź tę częśc BEZ azurecr.io
+docker tag basictodo:latest $ACR_NAME.azurecr.io/basictodo:latest
 ```
 
-3. Zaloguj się do swojego registry:
+4. Zaloguj się do swojego registry:
    
 ```bash
-az acr login --name <acrName>
+az acr login --name $ACR_NAME
 ```
 
 lub gdy używasz Docker Hub:
@@ -313,23 +332,23 @@ lub gdy używasz Docker Hub:
 docker login
 ```
 
-4. Wyślij obraz do registry:
+5. Wyślij obraz do registry:
 
 ```bash
-docker push <acrName>.azurecr.io/basictodo:latest
+docker push $ACR_NAME.azurecr.io/basictodo:latest
 ```
 
-5. Sprawdź, czy obraz jest dostępny w registry:
+6. Sprawdź, czy obraz jest dostępny w registry:
 
 ```bash
-az acr repository list -n <acrName>
+az acr repository list -n $ACR_NAME
 ```
 
 Otwórz przeglądarkę, znajdź Registry w Azure Portal i sprawdź, czy obraz jest dostępny.
 
 ## Wdrożenie w Azure App Service
 
-1. Wdróż aplikację z katalogu [basicwebapp](./basicwebapp)
+1. Wdróż aplikację z katalogu [basicwebapp](../basicwebapp)
 
 > Repozytorium masz już sklonowane, zmień katalog na `basicwebapp` i wykonaj kroki opisane w README.md.
 
@@ -339,7 +358,7 @@ Masz dwie opcje:
 
 > Obydwa ustawienia można wdrożyć za pomocą Terraform, natomiast w celach demonstracyjnych wykonaj je wedle sposobu poniżej.
 
-### Opcja 1: Użycie poświadczeń administracyjnych ACR
+### Opcja 1: Użycie poświadczeń administracyjnych ACR (gdy używasz Docker Hub albo innego repozytorium)
 
 ```bash
 # Pobierz dane uwierzytelniające z ACR
@@ -406,7 +425,6 @@ az role assignment create \
 3. Skonfiguruj Web App do użycia obrazu z ACR:
 
 ```bash
-$ACR_NAME="<nazwa-acr>"
 $IMAGE_NAME="basictodo:latest"
 
 az webapp config container set \
