@@ -124,6 +124,10 @@ pm2 startup
 pm2 save
 ```
 
+> Możesz w tym miejscu edytować Network Security Group i otwórzyć ruch na port 3000. Jeżeli aplikacja się uruchomiła, to powinna być dostępna.
+> Aplikacje webowe zazwyczaj działają na portach 80 i 443, wobec czego chcemy tutaj zrobić przekierowanie.
+> Dlaczego nie uruchomić aplikacji od razu na porcie 80? Ponieważ wtedy utrudnilibyśmy uruchamianie innych aplikacji, a na dodatek nasza aplikacja byłaby "goła" wystawiona na świat. Dzięki takim rozwiązaniom jak nginx można łatwiej wdrożyć reverse proxy oraz load balancing.
+
 1. Skonfiguruj Nginx:
 
 ```bash
