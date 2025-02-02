@@ -407,6 +407,7 @@ IDENTITY_ID=$(az webapp identity show \
 
 ```bash
 # Pobierz ID ACR
+ACR_NAME="<nazwa-acr>"
 RESOURCE_GROUP_ACR="<nazwa-resource-group-acr>"
 
 ACR_ID=$(az acr show \
@@ -425,7 +426,7 @@ az role assignment create \
 3. Skonfiguruj Web App do użycia obrazu z ACR:
 
 ```bash
-$IMAGE_NAME="basictodo:latest"
+IMAGE_NAME="basictodo:latest"
 
 az webapp config container set \
     --name $WEBAPP_NAME \
