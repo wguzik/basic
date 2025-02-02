@@ -166,12 +166,12 @@ Jeżeli się nie udał, zweryfikuj konfigurację, a po udanym teście zrestartuj
 sudo systemctl restart nginx
 ```
 
-3. Skonfiguruj firewall (opcjonalnie):
-
-```bash
-sudo ufw allow 'Nginx Full'
-sudo ufw enable
-```
+> Opcjonalnie Skonfiguruj firewall
+> ```bash
+> sudo ufw allow 'Nginx Full'
+> sudo ufw allow ssh
+> sudo ufw enable
+> ```
 
 4.  Otwórz przeglądarkę i wpisz adres IP serwera.
 
