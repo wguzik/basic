@@ -38,8 +38,13 @@ Zwróć uwagę na chaotyczne formatowanie plików.
 
 ### Krok 3 - Stwórz pre-commit hook
 
-```bash
+Podejrzyj folder z hookami:
 
+```bash
+ls -la .git/hooks/
+```
+
+Stwórz własny pre-commit hook:
 
 ```bash
 mkdir -p ~/basic/.git/hooks
@@ -48,7 +53,7 @@ chmod +x ~/basic/.git/hooks/pre-commit
 ```
 
 ```bash
-vi .git/hooks/pre-commit
+vi ~/basic/.git/hooks/pre-commit
 ```
 
 Wklej zawartość:
