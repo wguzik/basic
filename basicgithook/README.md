@@ -39,9 +39,12 @@ Zwróć uwagę na chaotyczne formatowanie plików.
 ### Krok 3 - Stwórz pre-commit hook
 
 ```bash
-mkdir -p .git/hooks
-touch .git/hooks/pre-commit
-chmod +x .git/hooks/pre-commit
+
+
+```bash
+mkdir -p ~/basic/.git/hooks
+touch ~/basic/.git/hooks/pre-commit
+chmod +x ~/basic/.git/hooks/pre-commit
 ```
 
 ```bash
@@ -76,9 +79,10 @@ zapisz:
 ```bash
 [ESC]
 :wq
+[ENTER]
 ```
 
-### Krok 4 - Zmieniaj pliki i commituj
+### Krok 4 - Zweryfikuj działanie pre-commit hooka
 
 ```bash
 vi main.tf
@@ -90,9 +94,22 @@ zapisz:
 ```bash
 [ESC]
 :wq
+[ENTER]
 ```
 
 ```bash
 git add .
 git commit -m "Formatowanie plików Terraform"
+```
+
+Zwróć uwagę na to ile plików zostało poprawionych w ramach commitu:
+
+```bash
+git log --name-only
+```
+
+Zwróć uwagę na to, że część plików została sformatowana, ale nie zostały scommitowane:
+
+```bash
+git status
 ```
