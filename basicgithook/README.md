@@ -8,36 +8,47 @@ Wykorzystanie pre-hook commit do formatowania plików Terraform przed commitowan
 ## Wymagania
 
 - Aktywna subskrypcja Azure i dostęp do portalu
-- Zainstalowany Terraform
-- Zainstalowane Azure CLI
-- Lub wszystko w Cloud Shell
+- Cloud Shell
 
 Czas: 30 minut
 
-
 ## Instrukcje
 
-### Krok 1 - Utwórz Strukturę Projektu
-
-
-### Krok 2 - Przygotuj Pliki
-
-
-### Krok 3 - Inicjalizacja i Wdrożenie
+### Krok 1 - Sklonuj repozytorium
 
 ```bash
-terraform init
-terraform plan
-terraform apply
+git clone https://github.com/wguzik/basic.git
 ```
 
-### Krok 4 - Stwórz pre-commit hook
+```bash
+cd basic/basicgithook
+```
+
+### Krok 2 -  Podejrzyj pliki
+
+```bash
+ls -la
+```
+
+```bash
+cat main.tf
+```
+
+Zwróć uwagę na chaotyczne formatowanie plików.
+
+### Krok 3 - Stwórz pre-commit hook
 
 ```bash
 mkdir -p .git/hooks
 touch .git/hooks/pre-commit
 chmod +x .git/hooks/pre-commit
 ```
+
+```bash
+vi .git/hooks/pre-commit
+```
+
+Wklej zawartość:
 
 ```bash
 #!/bin/bash
@@ -60,25 +71,28 @@ fi
 exit 0
 ```
 
-
-
-
-
-
-### Krok 5 - Sprzątanie
-
-Po zakończeniu eksperymentów, usuń zasoby:
+zapisz:
 
 ```bash
-terraform destroy
+[ESC]
+:wq
 ```
 
+### Krok 4 - Zmieniaj pliki i commituj
 
+```bash
+vi main.tf
+```
+(dodaj lub usuń wcięcia)
 
+zapisz:
 
-## Uwagi
+```bash
+[ESC]
+:wq
+```
 
-- Nazwy kont magazynu muszą być globalnie unikalne i zawierać tylko małe litery i cyfry
-- Upewnij się, że jesteś zalogowany do Azure CLI przed uruchomieniem poleceń Terraform
-- Blok `depends_on` zapewnia, że grupa zasobów zostanie utworzona przed kontem magazynu
-- Domyślna lokalizacja to "westeurope", możesz ją zmienić w pliku terraform.tfvars
+```bash
+git add .
+git commit -m "Formatowanie plików Terraform"
+```
