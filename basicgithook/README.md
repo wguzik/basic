@@ -41,7 +41,7 @@ Zwróć uwagę na chaotyczne formatowanie plików.
 Podejrzyj folder z hookami:
 
 ```bash
-ls -la .git/hooks/
+ls -la ~/basic/.git/hooks/
 ```
 
 Stwórz własny pre-commit hook:
@@ -100,6 +100,12 @@ zapisz:
 [ESC]
 :wq
 [ENTER]
+```
+
+Potwierdź zmianę:
+
+```bash
+git status
 ```
 
 ```bash
