@@ -47,11 +47,18 @@ Czas trwania: 30 minut
   cp terraform.tfvars.example terraform.tfvars
   ```
 
+  - podaj swoją subskrypcję
+  
+  ```bash
+  subscription_id=$(az account show --query="id")
+  sed -i "s/YourSubscriptionID/$subscription_id/g" terraform.tfvars
+  ```
+
   - zmień custom_name
 
   ```bash
-   sed -i 's/mywebapp/<twojeinicjaly>/' terraform.tfvars
-   # sed -i 's/mywebapp/wg/' terraform.tfvars
+  sed -i 's/mywebapp/<twojeinicjaly>/' terraform.tfvars
+  # sed -i 's/mywebapp/wg/' terraform.tfvars
   ```
 
 ### Krok 4 - Wdróż aplikację i odwiedź stronę
@@ -64,11 +71,11 @@ Czas trwania: 30 minut
 
 ### Krok 5 - zmodifykuj obraz
 
-  ```
+  ```bash
   sed -i 's/nginx:latest/vhron\/basictodo:0.2.0/' terraform.tfvars
   ```
 
-### Krok 4 - Wdróż zmiany
+### Krok 6 - Wdróż zmiany
 
   ```bash
   terraform apply
