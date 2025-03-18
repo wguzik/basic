@@ -25,13 +25,12 @@ resource "azurerm_linux_web_app" "webapp" {
   service_plan_id     = azurerm_service_plan.asp.id
 
   site_config {
+    always_on = true
+    
     application_stack {
-      docker_image_name = "${var.docker_image}"
+      docker_image_name = "nginx:latest"
     }
-  }
-
-  app_settings = {
-    "WEBSITES_ENABLE_APP_SERVICE_STORAGE" = "false"
-    "DOCKER_REGISTRY_SERVER_URL"          = "https://index.docker.io"
+    
+    container_registry_use_managed_identity = false
   }
 }
