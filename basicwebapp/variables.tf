@@ -17,3 +17,9 @@ variable "docker_image" {
   type        = string
   description = "The Docker image to be used for the Web App"
 }
+
+variable "subscription_id" {
+  type        = string
+  description = "The Azure subscription ID to use for the deployment"
+}
+
