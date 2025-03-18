@@ -71,7 +71,7 @@ Czas trwania: 30 minut
 
 ### Krok 5 - zmodifykuj obraz
 
-  ```
+  ```bash
   sed -i 's/nginx:latest/vhron\/basictodo:0.2.0/' terraform.tfvars
   ```
 

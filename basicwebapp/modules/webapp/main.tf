@@ -28,7 +28,7 @@ resource "azurerm_linux_web_app" "webapp" {
     always_on = true
     
     application_stack {
-      docker_image_name = "nginx:latest"
+      docker_image_name = var.docker_image
     }
     
     container_registry_use_managed_identity = false
