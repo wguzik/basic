@@ -41,7 +41,6 @@ resource "azurerm_linux_web_app" "webapp" {
   }
 
   app_settings = {
-    "WEBSITE_VNET_ROUTE_ALL"   = "1"
     "STORAGE_ACCOUNT_NAME"     = var.storage_account_name
   }
 }
