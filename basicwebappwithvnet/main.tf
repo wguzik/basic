@@ -29,6 +29,7 @@ module "webapp" {
   location              = var.region
   sku_size              = var.sku_size
   docker_image          = var.docker_image
+  docker_registry_url   = var.docker_registry_url
   integration_subnet_id = module.vnet.integration_subnet_id
   storage_account_name  = module.storage.storage_account_name
   depends_on            = [module.resource_group, module.vnet, module.storage]

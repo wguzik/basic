@@ -34,7 +34,8 @@ resource "azurerm_linux_web_app" "webapp" {
     always_on = true
 
     application_stack {
-      docker_image_name = var.docker_image
+      docker_image_name   = var.docker_image
+      docker_registry_url = var.docker_registry_url
     }
 
     container_registry_use_managed_identity = false

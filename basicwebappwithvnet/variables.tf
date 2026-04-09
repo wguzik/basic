@@ -18,6 +18,12 @@ variable "docker_image" {
   description = "The Docker image to be used for the Web App"
 }
 
+variable "docker_registry_url" {
+  type        = string
+  description = "URL of the container registry"
+  default     = "https://index.docker.io"
+}
+
 variable "subscription_id" {
   type        = string
   description = "The Azure subscription ID to use for the deployment"
