@@ -3,6 +3,11 @@ output "webapp_url" {
   value       = "https://${azurerm_linux_web_app.webapp.default_hostname}"
 }
 
+output "webapp_name" {
+  description = "The name of the web app"
+  value       = azurerm_linux_web_app.webapp.name
+}
+
 output "webapp_principal_id" {
   description = "Principal ID of the web app's system-assigned managed identity"
   value       = azurerm_linux_web_app.webapp.identity[0].principal_id

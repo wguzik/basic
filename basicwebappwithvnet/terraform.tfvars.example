@@ -1,7 +1,4 @@
-custom_name          = "mywebapp" #inicjały
-region               = "northeurope"
-sku_size             = "P0v3"
-docker_image         = "nginx:latest" #"vhron/basicgallery:0.1.0"
-docker_registry_url  = "https://index.docker.io" #Docker Hub; for ACR use "https://<registry>.azurecr.io"
-subscription_id      = YourSubscriptionID
-
+custom_name     = "mywebapp" #inicjały
+region          = "northeurope"
+sku_size        = "P0v3"
+subscription_id = YourSubscriptionID

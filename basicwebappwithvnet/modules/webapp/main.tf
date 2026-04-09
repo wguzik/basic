@@ -31,17 +31,17 @@ resource "azurerm_linux_web_app" "webapp" {
   }
 
   site_config {
-    always_on = true
+    always_on        = true
+    app_command_line = "node server.js"
 
     application_stack {
-      docker_image_name   = var.docker_image
-      docker_registry_url = var.docker_registry_url
+      node_version = "20-lts"
     }
-
-    container_registry_use_managed_identity = false
   }
 
   app_settings = {
     "STORAGE_ACCOUNT_NAME"     = var.storage_account_name
+    "WEBSITES_PORT"            = "3000"
+    "WEBSITE_RUN_FROM_PACKAGE" = "1"
   }
 }

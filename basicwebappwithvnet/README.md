@@ -89,6 +89,69 @@ Czas trwania: 45 minut
 Aplikacja nie załadowała się?
 Odwiedź "Deployment Center" na poziomie Web App w Portalu Azure i zweryfikuj jak się nazywa obraz. Czy format jest właściwy?
 
+---
+
+## Wdrożenie aplikacji basicgallery
+
+Aplikacja `basicgallery` to galeria obrazów pobieranych z Azure Blob Storage. Jej kod źródłowy znajduje się w katalogu `basicgallery/` w tym samym repozytorium.
+
+### Krok A - Zbuduj aplikację
+
+  ```bash
+  cd ~/basic/basicgallery
+
+  npm install
+  npm run build
+  npm install --omit=dev
+  ```
+
+### Krok B - Spakuj do ZIP
+
+  ```bash
+  zip -r ../app.zip build/ server.js node_modules/ package.json
+  ```
+
+### Krok C - Pobierz nazwę Web App z outputów Terraform
+
+  ```bash
+  cd ~/basic/basicwebappwithvnet
+
+  WEBAPP_NAME=$(terraform output -raw webapp_name)
+  RG=$(terraform output -raw rg_name)
+  ```
+
+### Krok D - Wdróż ZIP
+
+  ```bash
+  az webapp deploy \
+    --resource-group $RG \
+    --name $WEBAPP_NAME \
+    --src-path ../app.zip \
+    --type zip
+  ```
+
+### Krok E - Utwórz kontener i wgraj zdjęcia
+
+  ```bash
+  STORAGE_ACCOUNT=$(terraform output -raw storage_account_name)
+
+  az storage container create \
+    --name images \
+    --account-name $STORAGE_ACCOUNT \
+    --auth-mode login
+
+  az storage blob upload \
+    --account-name $STORAGE_ACCOUNT \
+    --container-name images \
+    --file <ścieżka/do/zdjęcia.jpg> \
+    --name zdjecie.jpg \
+    --auth-mode login
+  ```
+
+  > Storage account ma wyłączony dostęp publiczny. Jeśli powyższe polecenia zwrócą błąd autoryzacji sieciowej, tymczasowo włącz dostęp publiczny w portalu: Storage Account → Networking → Public network access → Enabled from all networks, wgraj pliki, następnie wyłącz.
+
+---
+
 ### Krok -1 - Usuń zasoby
 
   ```bash

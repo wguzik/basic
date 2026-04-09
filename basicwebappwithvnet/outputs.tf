@@ -3,6 +3,11 @@ output "webapp_url" {
   value       = module.webapp.webapp_url
 }
 
+output "webapp_name" {
+  description = "Name of the web app (needed for az webapp deploy)"
+  value       = module.webapp.webapp_name
+}
+
 output "rg_name" {
   description = "Resource group name"
   value       = module.resource_group.name

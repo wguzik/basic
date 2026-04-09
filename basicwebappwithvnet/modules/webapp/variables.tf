@@ -18,17 +18,6 @@ variable "sku_size" {
   description = "The SKU size for the App Service Plan"
 }
 
-variable "docker_image" {
-  type        = string
-  description = "The Docker image to be used for the Web App"
-}
-
-variable "docker_registry_url" {
-  type        = string
-  description = "URL of the container registry"
-  default     = "https://index.docker.io"
-}
-
 variable "integration_subnet_id" {
   type        = string
   description = "Subnet ID for VNet integration (delegated to Microsoft.Web/serverFarms)"
